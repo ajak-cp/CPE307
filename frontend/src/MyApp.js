@@ -28,21 +28,12 @@ function MyApp() {
   //   setCharacters([...characters, person]);
   // }
 
-  async function fetchAll(){
-    try {
-       const response = await axios.get('http://localhost:5000/users');
-       return response.data.users_list;     
-    }
-    catch (error){
-       //We're not handling errors. Just logging into the console.
-       console.log(error); 
-       return false;         
-    }
- }
 
  async function makePostCall(person){
   try {
      const response = await axios.post('http://localhost:5000/users', person);
+    //  console.log(person)
+    //  console.log(response)
      return response.data;
   }
   catch (error) {
@@ -54,9 +45,28 @@ function MyApp() {
 function updateList(person) { 
   makePostCall(person).then( result => {
   if (result)
-     setCharacters([...characters, person] );
+     setCharacters([...characters, result] );
   });
 }
+
+ useEffect(() => {
+  fetchAll().then( result => {
+     if (result)
+        setCharacters(result);
+   });
+}, [] );
+
+  async function fetchAll(){
+    try {
+       const response = await axios.get('http://localhost:5000/users');
+       return response.data.users_list;     
+    }
+    catch (error){
+       //We're not handling errors. Just logging into the console.
+       console.log(error); 
+       return false;         
+    }
+ }
 
  useEffect(() => {
   fetchAll().then( result => {
