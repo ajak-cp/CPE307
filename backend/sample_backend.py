@@ -94,6 +94,7 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 from flask_cors import CORS
+import random
 import json
 
 
@@ -165,9 +166,10 @@ def get_users():
    elif request.method == 'POST':
     #    print(">> request JSON", request.get_json())
       userToAdd = request.get_json()
+      userToAdd['id'] = str(random.randint(1111,9999))
       users['users_list'].append(userToAdd)
       resp = jsonify(success=True)
-      #resp.status_code = 200 #optionally, you can always set a response code. 
+      resp.status_code = 201 #optionally, you can always set a response code. 
       # 200 is the default code for a normal response
       return resp
   
