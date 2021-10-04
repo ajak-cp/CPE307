@@ -7,11 +7,21 @@ import axios from 'axios';
 function MyApp() {
   const [characters, setCharacters] = useState([]);
 
-function removeOneCharacter (index) {
-  const updated = characters.filter((character, i) => {
-    return i !== index
-  });
-  setCharacters(updated);
+  async function removeOneCharacter (index) {
+    const updated = characters.filter((character, i) => {
+      return i !== index
+    });
+    setCharacters(updated);
+    try {
+      const response = await axios.delete('http://localhost:5000/users/'+characters[index].id);
+      // setCharacters(updated);
+      return response.data.users_list;     
+      }
+    catch (error){
+      //We're not handling errors. Just logging into the console.
+      console.log(error); 
+      return false;         
+    }
   }
 
   // function updateList(person) {
@@ -33,7 +43,7 @@ function removeOneCharacter (index) {
  async function makePostCall(person){
   try {
      const response = await axios.post('http://localhost:5000/users', person);
-     return response;
+     return response.data;
   }
   catch (error) {
      console.log(error);
